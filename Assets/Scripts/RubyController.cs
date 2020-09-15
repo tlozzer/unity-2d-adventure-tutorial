@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
 {
+    private Rigidbody2D _rigidBody;
+
     private float HorizontalMovement { get; set; } = 0f;
     private float VerticalMovement { get; set; } = 0f;
 
@@ -14,6 +17,11 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
     {
         config = new ControlsConfig();
         config.Gameplay.SetCallbacks(this);
+    }
+
+    private void Start()
+    {
+        _rigidBody = GetComponent<Rigidbody2D>();
     }
 
     private void OnEnable()
@@ -31,14 +39,15 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
         HorizontalMovement = context.ReadValue<float>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        transform.Translate(new Vector2(HorizontalMovement, VerticalMovement).normalized * Time.deltaTime * _speed);
-    }
-
     public void OnVerticalMovement(InputAction.CallbackContext context)
     {
         VerticalMovement = context.ReadValue<float>();
+    }
+
+    private void FixedUpdate()
+    {
+        Vector2 position = _rigidBody.position;
+        position += new Vector2(HorizontalMovement, VerticalMovement).normalized * _speed * Time.deltaTime;
+        _rigidBody.MovePosition(position);
     }
 }
