@@ -11,6 +11,9 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
 
     [SerializeField]
     private float _speed = 1f;
+    [SerializeField]
+    private int _maxHealth = 5;
+    private int _currentHealth;
     private ControlsConfig config;
 
     private void Awake()
@@ -22,6 +25,7 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
+        _currentHealth = _maxHealth;
     }
 
     private void OnEnable()
@@ -49,5 +53,10 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
         Vector2 position = _rigidBody.position;
         position += new Vector2(HorizontalMovement, VerticalMovement).normalized * _speed * Time.deltaTime;
         _rigidBody.MovePosition(position);
+    }
+
+    private void ChangeHealth(int amount)
+    {
+        _currentHealth = Mathf.Clamp(_currentHealth + amount, 0, _maxHealth);
     }
 }
