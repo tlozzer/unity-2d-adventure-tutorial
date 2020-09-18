@@ -2,23 +2,23 @@
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions, HealthCollector
+public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions, HealthCollector, Damageable
 {
     private Rigidbody2D _rigidBody;
     private ControlsConfig _config;
+    private bool _invincible;
+    private float _invincibleTimer;
 
     [SerializeField]
     private float _speed = 1f;
     [SerializeField]
     private int _maxHealth = 5;
+    [SerializeField]
+    private float _invincibleTime = 1f;
 
     private float HorizontalMovement { get; set; } = 0f;
     private float VerticalMovement { get; set; } = 0f;
-    public int Health
-    {
-        get;
-        private set;
-    }
+    public int Health { get; private set; }
 
     private void Awake()
     {
@@ -30,6 +30,7 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions, He
     {
         _rigidBody = GetComponent<Rigidbody2D>();
         Health = _maxHealth;
+        _invincible = false;
     }
 
     private void OnEnable()
@@ -59,7 +60,7 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions, He
         _rigidBody.MovePosition(position);
     }
 
-    public void ChangeHealth(int amount)
+    private void ChangeHealth(int amount)
     {
         Health = Mathf.Clamp(Health + amount, 0, _maxHealth);
     }
@@ -67,5 +68,31 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions, He
     public bool NeedHealth()
     {
         return Health < _maxHealth;
+    }
+
+    public void TakeDamage(int amount)
+    {
+        if (!_invincible)
+        {
+            ChangeHealth(-amount);
+            _invincible = true;
+            _invincibleTimer = Time.time + _invincibleTime;
+        }
+    }
+
+    public void AddHealth(int amount)
+    {
+        ChangeHealth(amount);
+    }
+
+    private void Update()
+    {
+        if (_invincible)
+        {
+            if (_invincibleTimer < Time.time)
+            {
+                _invincible = false;
+            }
+        }
     }
 }

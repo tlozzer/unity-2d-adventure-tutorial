@@ -5,5 +5,5 @@ using UnityEngine;
 public interface HealthCollector
 {
     bool NeedHealth();
-    void ChangeHealth(int amount);
+    void AddHealth(int amount);
 }

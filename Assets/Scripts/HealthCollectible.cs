@@ -15,7 +15,7 @@ public class HealthCollectible : MonoBehaviour
         {
             if (healthCollector.NeedHealth())
             {
-                healthCollector.ChangeHealth(_health);
+                healthCollector.AddHealth(_health);
                 Destroy(gameObject);
             }
         }
