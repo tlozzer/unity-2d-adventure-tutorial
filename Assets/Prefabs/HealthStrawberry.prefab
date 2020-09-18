@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1425138118301723296}
   - component: {fileID: 322622549420814962}
   - component: {fileID: 6640687536287892025}
+  - component: {fileID: -2491512376795629342}
   m_Layer: 0
   m_Name: HealthStrawberry
   m_TagString: Untagged
@@ -96,7 +97,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.029545382, y: 0.08863674}
+  m_Offset: {x: -0.029545382, y: 0.09659128}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
@@ -107,5 +108,18 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.44090924, y: 0.12424323}
+  m_Size: {x: 0.44090924, y: 0.108334154}
   m_EdgeRadius: 0
+--- !u!114 &-2491512376795629342
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8999080808179421029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 354801e9458319a4192b8bc2924e2825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 1

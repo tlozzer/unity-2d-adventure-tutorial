@@ -2,40 +2,44 @@
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
+public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions, HealthCollector
 {
     private Rigidbody2D _rigidBody;
-
-    private float HorizontalMovement { get; set; } = 0f;
-    private float VerticalMovement { get; set; } = 0f;
+    private ControlsConfig _config;
 
     [SerializeField]
     private float _speed = 1f;
     [SerializeField]
     private int _maxHealth = 5;
-    public int _currentHealth;
-    private ControlsConfig config;
+
+    private float HorizontalMovement { get; set; } = 0f;
+    private float VerticalMovement { get; set; } = 0f;
+    public int Health
+    {
+        get;
+        private set;
+    }
 
     private void Awake()
     {
-        config = new ControlsConfig();
-        config.Gameplay.SetCallbacks(this);
+        _config = new ControlsConfig();
+        _config.Gameplay.SetCallbacks(this);
     }
 
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
-        _currentHealth = _maxHealth;
+        Health = _maxHealth;
     }
 
     private void OnEnable()
     {
-        config.Gameplay.Enable();
+        _config.Gameplay.Enable();
     }
 
     private void OnDisable()
     {
-        config.Gameplay.Disable();
+        _config.Gameplay.Disable();
     }
 
     public void OnHorizontalMove(InputAction.CallbackContext context)
@@ -55,8 +59,13 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
         _rigidBody.MovePosition(position);
     }
 
-    private void ChangeHealth(int amount)
+    public void ChangeHealth(int amount)
     {
-        _currentHealth = Mathf.Clamp(_currentHealth + amount, 0, _maxHealth);
+        Health = Mathf.Clamp(Health + amount, 0, _maxHealth);
+    }
+
+    public bool NeedHealth()
+    {
+        return Health < _maxHealth;
     }
 }
