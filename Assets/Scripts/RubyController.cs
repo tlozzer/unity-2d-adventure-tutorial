@@ -13,7 +13,7 @@ public class RubyController : MonoBehaviour, ControlsConfig.IGameplayActions
     private float _speed = 1f;
     [SerializeField]
     private int _maxHealth = 5;
-    private int _currentHealth;
+    public int _currentHealth;
     private ControlsConfig config;
 
     private void Awake()
